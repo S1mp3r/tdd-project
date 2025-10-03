@@ -1,4 +1,4 @@
-package com.rafael.register;
+package com.rafael.register.service;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -16,7 +16,7 @@ import com.rafael.register.repository.UserRepository;
 import com.rafael.register.service.impl.UserServiceImpl;
 
 @SpringBootTest
-class RegisterApplicationTests {
+class UserServiceTest {
 
 	private final static String id = "1";
 
