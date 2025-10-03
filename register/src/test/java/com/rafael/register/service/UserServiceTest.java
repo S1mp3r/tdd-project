@@ -76,4 +76,34 @@ class UserServiceTest {
 		verifyNoInteractions(repository);
 	}
 
+	@Test
+	void should_return_error_when_username_is_shorter_than_3_characters() {
+		User user = new User();
+		user.setUsername("Ra");
+		user.setBirthDate(LocalDate.now().minus(20, year));
+
+		assertThrows(
+			RuntimeException.class, 
+			() -> service.register(user), 
+			"Username must be at most 10 characters long."
+		);
+
+		verifyNoInteractions(repository);
+	}
+
+	@Test
+	void should_return_error_when_username_is_longer_than_10_characters() {
+		User user = new User();
+		user.setUsername("Rafael12345");
+		user.setBirthDate(LocalDate.now().minus(20, year));
+
+		assertThrows(
+			RuntimeException.class, 
+			() -> service.register(user), 
+			"Username must be at most 10 characters long."
+		);
+
+		verifyNoInteractions(repository);
+	}
+
 }
