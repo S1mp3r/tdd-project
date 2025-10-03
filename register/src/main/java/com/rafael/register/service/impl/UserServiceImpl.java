@@ -31,10 +31,6 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("Invalid age.");
         }
 
-        if (user.getUsername().length() < Constaints.MIN_USERNAME_LENGTH || user.getUsername().length() > Constaints.MAX_USERNAME_LENGTH) {
-            throw new RuntimeException("Invalid username.");
-        }
-
         if (user.getPassword().length() < Constaints.MIN_PASSWORD_LENGTH || user.getPassword().length() > Constaints.MAX_PASSWORD_LENGTH) {
             throw new RuntimeException("Invalid password");
         }

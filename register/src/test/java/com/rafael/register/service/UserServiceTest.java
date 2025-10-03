@@ -28,8 +28,6 @@ class UserServiceTest {
 	private static final TemporalUnit year = ChronoUnit.YEARS;
 	private static final int invalidAgeMinimum = 2015;
 	private static final int invalidAgeMaximum = 1960;
-	private static final String invalidUsernameMinimum = "R";
-	private static final String invalidUsernameMaximum = "Rafael12345";
 	private static final String invalidPasswordMinimum = "123";
 	private static final String invalidPasswordMaximum = "1234567";
 
@@ -67,22 +65,6 @@ class UserServiceTest {
 			RuntimeException.class, 
 			() -> service.register(user), 
 			"Invalid age."
-		);
-
-		verifyNoInteractions(repository);
-	}
-
-	@ParameterizedTest
-	@ValueSource(strings = {invalidUsernameMinimum, invalidUsernameMaximum})
-	void should_return_error_when_username_is_invalid(String username) {
-		User user = new User();
-		user.setUsername(username);
-		user.setBirthDate(LocalDate.now().minus(20, year));
-
-		assertThrows(
-			RuntimeException.class, 
-			() -> service.register(user), 
-			"Invalid username."
 		);
 
 		verifyNoInteractions(repository);
