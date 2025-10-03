@@ -27,28 +27,17 @@ public class UserServiceImpl implements UserService {
     private void validateUser(User user) {
         var age = Period.between(user.getBirthDate(), LocalDate.now()).getYears();
 
-        if (age < Constaints.MIN_AGE) {
-            throw new RuntimeException("User must be at least 18 years old to register.");
+        if (age < Constaints.MIN_AGE || age > Constaints.MAX_AGE) {
+            throw new RuntimeException("Invalid age.");
         }
 
-        if (age > Constaints.MAX_AGE) {
-            throw new RuntimeException("User must be at most 60 years old to register.");
+        if (user.getUsername().length() < Constaints.MIN_USERNAME_LENGTH || user.getUsername().length() > Constaints.MAX_USERNAME_LENGTH) {
+            throw new RuntimeException("Invalid username.");
         }
 
-        if (user.getUsername().length() < Constaints.MIN_USERNAME_LENGTH) {
-            throw new RuntimeException("Username must be at least 3 characters long.");
+        if (user.getPassword().length() < Constaints.MIN_PASSWORD_LENGTH || user.getPassword().length() > Constaints.MAX_PASSWORD_LENGTH) {
+            throw new RuntimeException("Invalid password");
         }
 
-        if (user.getUsername().length() > Constaints.MAX_USERNAME_LENGTH) {
-            throw new RuntimeException("Username must be at most 10 characters long.");
-        }
-
-        if (user.getPassword().length() < Constaints.MIN_PASSWORD_LENGTH) {
-            throw new RuntimeException("Password must be at least 4 characters long.");
-        }
-
-        if (user.getPassword().length() > Constaints.MAX_PASSWORD_LENGTH) {
-            throw new RuntimeException("Password must be at most 6 characters long.");
-        }
     }
 }

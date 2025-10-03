@@ -11,6 +11,8 @@ import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.ParameterizedTest;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +26,12 @@ class UserServiceTest {
 
 	private final static String id = "1";
 	private static final TemporalUnit year = ChronoUnit.YEARS;
+	private static final int invalidAgeMinimum = 2015;
+	private static final int invalidAgeMaximum = 1960;
+	private static final String invalidUsernameMinimum = "R";
+	private static final String invalidUsernameMaximum = "Rafael12345";
+	private static final String invalidPasswordMinimum = "123";
+	private static final String invalidPasswordMaximum = "1234567";
 
 	@Mock
 	private UserRepository repository;
@@ -49,92 +57,52 @@ class UserServiceTest {
 		assertEquals(userAfter, actual);
 	}
 
-	@Test
-	void should_return_error_when_age_is_under_18() {
+	@ParameterizedTest
+	@ValueSource(ints = {invalidAgeMinimum, invalidAgeMaximum})
+	void should_return_error_when_age_is_invalid(int year) {
 		User user = new User();
-		user.setBirthDate(LocalDate.now().minus(10, year));
+		user.setBirthDate(LocalDate.of(year, 1, 1));
 
 		assertThrows(
 			RuntimeException.class, 
 			() -> service.register(user), 
-			"User must be at least 18 years old to register."
+			"Invalid age."
 		);
 
 		verifyNoInteractions(repository);
 	}
 
-	@Test
-	void should_return_error_when_age_is_over_60() {
+	@ParameterizedTest
+	@ValueSource(strings = {invalidUsernameMinimum, invalidUsernameMaximum})
+	void should_return_error_when_username_is_invalid(String username) {
 		User user = new User();
-		user.setBirthDate(LocalDate.now().minus(70, year));
-
-		assertThrows(
-			RuntimeException.class, 
-			() -> service.register(user), 
-			"User must be at most 60 years old to register."
-		);
-		verifyNoInteractions(repository);
-	}
-
-	@Test
-	void should_return_error_when_username_is_shorter_than_3_characters() {
-		User user = new User();
-		user.setUsername("Ra");
+		user.setUsername(username);
 		user.setBirthDate(LocalDate.now().minus(20, year));
 
 		assertThrows(
 			RuntimeException.class, 
 			() -> service.register(user), 
-			"Username must be at most 10 characters long."
+			"Invalid username."
 		);
 
 		verifyNoInteractions(repository);
 	}
 
-	@Test
-	void should_return_error_when_username_is_longer_than_10_characters() {
-		User user = new User();
-		user.setUsername("Rafael12345");
-		user.setBirthDate(LocalDate.now().minus(20, year));
-
-		assertThrows(
-			RuntimeException.class, 
-			() -> service.register(user), 
-			"Username must be at most 10 characters long."
-		);
-
-		verifyNoInteractions(repository);
-	}
-
-	@Test
-	void should_return_error_when_password_is_shorter_than_4_characters() {
+	@ParameterizedTest
+	@ValueSource(strings = {invalidPasswordMinimum, invalidPasswordMaximum})
+	void should_return_error_when_password_is_invalid(String password) {
 		User user = new User();
 		user.setUsername("Rafael");
-		user.setPassword("123");
+		user.setPassword(password);
 		user.setBirthDate(LocalDate.now().minus(20, year));
 
 		assertThrows(
 			RuntimeException.class, 
 			() -> service.register(user), 
-			"Password must be at least 4 characters long."
+			"Invalid password."
 		);
 
 		verifyNoInteractions(repository);
 	}
 
-	@Test
-	void should_return_error_when_password_is_longer_than_6_characters() {
-		User user = new User();
-		user.setUsername("Rafael");
-		user.setPassword("1234567");
-		user.setBirthDate(LocalDate.now().minus(20, year));
-
-		assertThrows(
-			RuntimeException.class, 
-			() -> service.register(user), 
-			"Password must be at most 6 characters long."
-		);
-
-		verifyNoInteractions(repository);
-	}
 }
