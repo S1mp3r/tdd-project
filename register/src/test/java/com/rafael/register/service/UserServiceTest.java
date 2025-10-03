@@ -1,6 +1,5 @@
 package com.rafael.register.service;
 
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -16,7 +15,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.fasterxml.jackson.datatype.jsr310.ser.YearSerializer;
 import com.rafael.register.entity.User;
 import com.rafael.register.repository.UserRepository;
 import com.rafael.register.service.impl.UserServiceImpl;
@@ -54,16 +52,27 @@ class UserServiceTest {
 	@Test
 	void should_return_error_when_age_is_under_18() {
 		User user = new User();
-		user.setUsername("Rafael");
-		user.setPassword(1234);
-		user.setBirthDate(LocalDate.now().minus(19, year));
+		user.setBirthDate(LocalDate.now().minus(10, year));
 
 		assertThrows(
 			RuntimeException.class, 
 			() -> service.register(user), 
 			"User must be at least 18 years old to register."
 		);
-		
+
+		verifyNoInteractions(repository);
+	}
+
+	@Test
+	void should_return_error_when_age_is_over_60() {
+		User user = new User();
+		user.setBirthDate(LocalDate.now().minus(70, year));
+
+		assertThrows(
+			RuntimeException.class, 
+			() -> service.register(user), 
+			"User must be at most 60 years old to register."
+		);
 		verifyNoInteractions(repository);
 	}
 
