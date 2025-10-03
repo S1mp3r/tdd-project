@@ -18,7 +18,7 @@ The system must allow a user to register with ther name and password, but with s
 mvn install
 ```
 
-# To create the docker container with the database
+# To create the docker container with the database - ./
 
 ```bash
 docker-compose up -d --build
