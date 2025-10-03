@@ -5,9 +5,13 @@ import java.time.LocalDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Document(collection = "users")
 public class User {
     
@@ -18,6 +22,6 @@ public class User {
     
     private String password;
     
-    private LocalDate birthDate;
+    private LocalDate dateOfBirth;
 
 }

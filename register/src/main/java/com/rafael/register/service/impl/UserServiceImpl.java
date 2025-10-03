@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     }
     
     private void validateUser(User user) {
-        var age = Period.between(user.getBirthDate(), LocalDate.now()).getYears();
+        var age = Period.between(user.getDateOfBirth(), LocalDate.now()).getYears();
 
         if (age < Constaints.MIN_AGE || age > Constaints.MAX_AGE) {
             throw new RuntimeException("Invalid age.");

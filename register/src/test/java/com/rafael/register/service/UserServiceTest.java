@@ -42,7 +42,7 @@ class UserServiceTest {
 		User userBefore = new User();
 		userBefore.setUsername("Rafael");
 		userBefore.setPassword("1234");
-		userBefore.setBirthDate(LocalDate.of(2002, 7, 25));
+		userBefore.setDateOfBirth(LocalDate.of(2002, 7, 25));
 
 		User userAfter = userBefore;
 		userAfter.setId(id);
@@ -59,7 +59,7 @@ class UserServiceTest {
 	@ValueSource(ints = {invalidAgeMinimum, invalidAgeMaximum})
 	void should_return_error_when_age_is_invalid(int year) {
 		User user = new User();
-		user.setBirthDate(LocalDate.of(year, 1, 1));
+		user.setDateOfBirth(LocalDate.of(year, 1, 1));
 
 		assertThrows(
 			RuntimeException.class, 
@@ -76,7 +76,7 @@ class UserServiceTest {
 		User user = new User();
 		user.setUsername("Rafael");
 		user.setPassword(password);
-		user.setBirthDate(LocalDate.now().minus(20, year));
+		user.setDateOfBirth(LocalDate.now().minus(20, year));
 
 		assertThrows(
 			RuntimeException.class, 
