@@ -7,7 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 class RegisterApplicationTests {
 
 	@Test
-	void contextLoads() {
+	void should_register_user_successfully() {
+		
 	}
 
 }
