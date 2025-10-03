@@ -106,4 +106,35 @@ class UserServiceTest {
 		verifyNoInteractions(repository);
 	}
 
+	@Test
+	void should_return_error_when_password_is_shorter_than_4_characters() {
+		User user = new User();
+		user.setUsername("Rafael");
+		user.setPassword("123");
+		user.setBirthDate(LocalDate.now().minus(20, year));
+
+		assertThrows(
+			RuntimeException.class, 
+			() -> service.register(user), 
+			"Password must be at least 4 characters long."
+		);
+
+		verifyNoInteractions(repository);
+	}
+
+	@Test
+	void should_return_error_when_password_is_longer_than_6_characters() {
+		User user = new User();
+		user.setUsername("Rafael");
+		user.setPassword("1234567");
+		user.setBirthDate(LocalDate.now().minus(20, year));
+
+		assertThrows(
+			RuntimeException.class, 
+			() -> service.register(user), 
+			"Password must be at most 6 characters long."
+		);
+
+		verifyNoInteractions(repository);
+	}
 }
