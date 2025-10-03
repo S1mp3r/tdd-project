@@ -1,16 +1,22 @@
 package com.rafael.register.service;
 
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.fasterxml.jackson.datatype.jsr310.ser.YearSerializer;
 import com.rafael.register.entity.User;
 import com.rafael.register.repository.UserRepository;
 import com.rafael.register.service.impl.UserServiceImpl;
@@ -19,6 +25,7 @@ import com.rafael.register.service.impl.UserServiceImpl;
 class UserServiceTest {
 
 	private final static String id = "1";
+	private static final TemporalUnit year = ChronoUnit.YEARS;
 
 	@Mock
 	private UserRepository repository;
@@ -42,6 +49,22 @@ class UserServiceTest {
 
 		verify(repository).save(userBefore);
 		assertEquals(userAfter, actual);
+	}
+
+	@Test
+	void should_return_error_when_age_is_under_18() {
+		User user = new User();
+		user.setUsername("Rafael");
+		user.setPassword(1234);
+		user.setBirthDate(LocalDate.now().minus(19, year));
+
+		assertThrows(
+			RuntimeException.class, 
+			() -> service.register(user), 
+			"User must be at least 18 years old to register."
+		);
+		
+		verifyNoInteractions(repository);
 	}
 
 }
