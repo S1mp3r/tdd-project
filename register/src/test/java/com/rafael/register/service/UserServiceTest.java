@@ -35,7 +35,7 @@ class UserServiceTest {
 	void should_register_user_successfully() {
 		User userBefore = new User();
 		userBefore.setUsername("Rafael");
-		userBefore.setPassword(1234);
+		userBefore.setPassword("1234");
 		userBefore.setBirthDate(LocalDate.of(2002, 7, 25));
 
 		User userAfter = userBefore;
