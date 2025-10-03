@@ -11,6 +11,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.rafael.register.entity.User;
+import com.rafael.register.repository.UserRepository;
+import com.rafael.register.service.impl.UserServiceImpl;
+
 @SpringBootTest
 class RegisterApplicationTests {
 
@@ -20,12 +24,12 @@ class RegisterApplicationTests {
 	private UserRepository repository;
 
 	@InjectMocks
-	private UserService service;
+	private UserServiceImpl service;
 
 	@Test
 	void should_register_user_successfully() {
 		User userBefore = new User();
-		userBefore.setuserBeforeName("Rafael");
+		userBefore.setUsername("Rafael");
 		userBefore.setPassword(1234);
 		userBefore.setBirthDate(LocalDate.of(2002, 7, 25));
 
